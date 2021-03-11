@@ -11,8 +11,19 @@ class CamsWrapper:
     def uniqueCamsIds(self):
         return self._csv["ID_CAMS'"].unique()
 
-    def filterByDate(self, date: str):
+    def uniqueDates(self):
+        return self._csv["DATE'"].unique()
+
+    def filter(self, date: str, camsPixelId: int, hour: int):
         '''
         date format: 2019-01-02
         '''
-        return self._csv[self._csv["DATE'"] == date + "'"]
+        table = self._csv[
+            (self._csv["DATE'"] == date + "'")
+            & (self._csv["ID_CAMS'"] == camsPixelId)
+        ]
+        if table.size > 0:
+            return table.iloc[0]["%d:00" % hour]
+        else:
+            return 0
+        return table

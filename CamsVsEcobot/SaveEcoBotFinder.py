@@ -7,11 +7,14 @@ class SaveEcoBotFinder:
 
     
     def getById(self, id: int):
-        path = os.path.join(self._dir, "saveecobot_" + str(id) + ".csv")
-        if os.path.exists(path):
-            return self.SaveEcoBotWrapper(path)
-        else:
-            print(path + " doesn't exits")
+        try:
+            path = os.path.join(self._dir, "saveecobot_" + str(id) + ".csv")
+            if os.path.exists(path):
+                return self.SaveEcoBotWrapper(path)
+            else:
+                print(path + " doesn't exits")
+                return None
+        except pd.errors.EmptyDataError:
             return None
  
 
