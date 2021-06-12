@@ -10,8 +10,15 @@ class IdMatcher:
         column = table["ID посту"]
         res = column.tolist()
         for i in self._banned:
-            res.remove(i)
+            try:
+                res.remove(i)
+            except ValueError:
+                pass # ok, I don't care
         return res
+
+    def getCamsIdByPostId(self, postId: int):
+        res = self._csv[self._csv["ID посту"] == postId]
+        return res.iloc[0]["ID CAMS"]
 
     @staticmethod
     def _toFloat(x) -> float:
