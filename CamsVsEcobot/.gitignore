@@ -3,3 +3,5 @@
 *.xlsx
 __pycache__
 .vscode/
+*.pdf
+*.pptx

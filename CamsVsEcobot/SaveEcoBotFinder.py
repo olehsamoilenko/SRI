@@ -5,25 +5,12 @@ class SaveEcoBotFinder:
     def __init__(self, dirname: str):
         self._dir = dirname
 
-    
-    def getById(self, id: int):
-        try:
-            path = os.path.join(self._dir, "saveecobot_" + str(id) + ".csv")
-            if os.path.exists(path):
-                return self.SaveEcoBotWrapper(path)
-            else:
-                print(path + " doesn't exits")
-                return None
-        except pd.errors.EmptyDataError:
-            return None
- 
-
 
     class SaveEcoBotWrapper:
-        def __init__(self, filename: str):
-            self._csv = pd.read_csv(filename)
+        def __init__(self, path: str):
+            self._csv = pd.read_csv(path)
             if "logged_at" not in self._csv.columns:
-                self._csv = pd.read_csv(filename, header=None, names=["device_id", "phenomenon", "value", "logged_at", "value_text"])
+                self._csv = pd.read_csv(path, header=None, names=["device_id", "phenomenon", "value", "logged_at", "value_text"])
 
         # def getValue(self, date: str, hour: int, phenomenon = "pm25"):
         #     # print(" %02d:00:00" % hour)
@@ -41,3 +28,18 @@ class SaveEcoBotFinder:
                                & (self._csv["phenomenon"] == phenomenon)]
             table = table.drop_duplicates(subset=['logged_at'])
             return table["value"].tolist()
+
+        def getCsv(self) -> pd.DataFrame:
+            return self._csv
+
+
+    def getById(self, id: int) -> SaveEcoBotWrapper:
+        try:
+            path = os.path.join(self._dir, "saveecobot_" + str(id) + ".csv")
+            if os.path.exists(path):
+                return self.SaveEcoBotWrapper(path)
+            else:
+                print(path + " doesn't exits")
+                return None
+        except pd.errors.EmptyDataError:
+            return None

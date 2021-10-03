@@ -16,6 +16,9 @@ class IdMatcher:
                 pass # ok, I don't care
         return res
 
+    def getAllSupportedPostIds(self) -> list:
+        return self._csv["ID посту"].tolist()
+
     def getCamsIdByPostId(self, postId: int):
         res = self._csv[self._csv["ID посту"] == postId]
         return res.iloc[0]["ID CAMS"]
