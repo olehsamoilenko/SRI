@@ -1,7 +1,7 @@
 import pandas as pd
 
 class IdMatcher:
-    def __init__(self, filename, bannedStations: list):
+    def __init__(self, filename, bannedStations: list = []):
         self._csv = pd.read_csv(filename)
         self._banned = bannedStations
 
@@ -19,9 +19,12 @@ class IdMatcher:
     def getAllSupportedPostIds(self) -> list:
         return self._csv["ID посту"].tolist()
 
+    def getAllSupportedCamsIds(self) -> list:
+        return self._csv["ID CAMS"].unique().tolist()
+
     def getCamsIdByPostId(self, postId: int):
         res = self._csv[self._csv["ID посту"] == postId]
-        return res.iloc[0]["ID CAMS"]
+        return int(res.iloc[0]["ID CAMS"])
 
     @staticmethod
     def _toFloat(x) -> float:
